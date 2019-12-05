@@ -87,6 +87,34 @@ public class Application {
         return activeUser.getLastLogin().equals("0000-00-00 00:00:00.000");
     }
 
+
+   /**
+    * Logs the user out of their account.
+    *
+    *
+    */
+
+    public void logout(){
+        activeUser = null;
+        Application.startup();
+    }
+
+    /**
+     * Prompts user for their initial password, and a new password and updates the account.
+     *
+     * @return their new account information
+     */
+
+    public void changePassword(){
+      String oldPassword;
+      while (oldPassword != activeUser.getPassword()){
+        //Graphically prompt user for their original password
+      }
+
+      //Graphically prompt user for their new password
+
+    }
+
     /////// MAIN METHOD ///////////////////////////////////////////////////////////////////
 
     /*
