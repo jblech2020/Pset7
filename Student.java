@@ -13,16 +13,12 @@ public class Student extends User {
     private double gpa;
     private String firstName;
     private String lastName;
-	private User user;
-	private ResultSet rs;
 	
-	public Student(int userId, String accountType, String username, String password, String lastLogin) {
-		super(userId, accountType, username, password, lastLogin);
+	public Student(User user, ResultSet rs) {
+		super(user.getUserId(), user.getAccountType(), user.getUsername(), user.getPassword(), user..getLastLogin());
+		this.studentId = rs.getInt();
+		this.classRank = rs.getInt();
+		
+				
 	}
-
-    public Student(User user, ResultSet rs) {
-      this.user = user;
-      this.rs = rs;
-    }
-
 }
