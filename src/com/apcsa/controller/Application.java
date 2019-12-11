@@ -57,11 +57,63 @@ public class Application {
                 //
                 // remember, the interface will be difference depending on the type
                 // of user that is logged in (root, administrator, teacher, student)
+                
+                if (this.activeUser.isStudent()) {
+                	studentUI();
+                } else if (this.activeUser.isTeacher()) {
+                	teacherUI();
+                } else if (this.activeUser.isRoot()) {
+                	rootUI();
+                } else if (this.activeUser.isAdministrator()) {
+                	adminUI();
+                }
+                
             } else {
                 System.out.println("\nInvalid username and/or password.");
             }
         }
     }
+    
+    /**
+     * Displays the student UI
+     * 
+     * 
+     */
+    
+    public void studentUI() {
+    	
+    }
+    
+    /**
+     * Displays the teacher UI
+     * 
+     * 
+     */
+    
+    public void teacherUI() {
+    	
+    }
+    
+    /**
+     * Displays the root UI
+     * 
+     * 
+     */
+    
+    public void rootUI() {
+    	
+    }
+    
+    /**
+     * Displays the administrator UI
+     * 
+     * 
+     */
+    
+    public void adminUI() {
+    	
+    }
+    
 
     /**
      * Logs in with the provided credentials.
