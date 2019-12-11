@@ -106,13 +106,19 @@ public class Application {
      */
 
     public void changePassword(){
-      String oldPassword;
+      String oldPassword = null;
       while (oldPassword != activeUser.getPassword()){
-        //Graphically prompt user for their original password
+    	  System.out.print("Enter your original password: ");
+    	  oldPassword = in.nextLine();
       }
 
-      //Graphically prompt user for their new password
-
+      String newPassword = null;
+      if (oldPassword != activeUser.getPassword()) {
+    	  System.out.print("Enter your new password: ");
+    	  newPassword = in.nextLine();
+    	  
+    	  activeUser.setPassword(newPassword);
+      }
     }
 
     /////// MAIN METHOD ///////////////////////////////////////////////////////////////////
