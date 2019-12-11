@@ -35,22 +35,22 @@ public class Application {
 
         while (true) {
             System.out.print("\nUsername: ");
-            String username = in.next();
+            String username = this.in.next();
 
             System.out.print("Password: ");
-            String password = in.next();
+            String password = this.in.next();
 
             // if login is successful, update generic user to administrator, teacher, or student
 
             if (login(username, password)) {
-                activeUser = activeUser.isAdministrator()
-                    ? PowerSchool.getAdministrator(activeUser) : activeUser.isTeacher()
-                    ? PowerSchool.getTeacher(activeUser) : activeUser.isStudent()
-                    ? PowerSchool.getStudent(activeUser) : activeUser.isRoot()
-                    ? activeUser : null;
+                this.activeUser = this.activeUser.isAdministrator()
+                    ? PowerSchool.getAdministrator(this.activeUser) : this.activeUser.isTeacher()
+                    ? PowerSchool.getTeacher(this.activeUser) : this.activeUser.isStudent()
+                    ? PowerSchool.getStudent(this.activeUser) : this.activeUser.isRoot()
+                    ? this.activeUser : null;
 
-                if (isFirstLogin() && !activeUser.isRoot()) {
-                    // first-time users need to change their passwords from the default provided
+                if (isFirstLogin() && !this.activeUser.isRoot()) {
+                	changePassword(true);
                 }
 
                 // create and show the user interface
@@ -101,24 +101,23 @@ public class Application {
 
     /**
      * Prompts user for their initial password, and a new password and updates the account.
+     * If it is the user's first login, it won't prompt for the old login
      *
      * @return their new account information
      */
 
-    public void changePassword(){
-      String oldPassword = null;
-      while (oldPassword != activeUser.getPassword()){
-    	  System.out.print("Enter your original password: ");
-    	  oldPassword = in.nextLine();
-      }
-
-      String newPassword = null;
-      if (oldPassword != activeUser.getPassword()) {
+    public void changePassword(boolean firstLogin){
+    	  String oldPassword = null;
+    	  if (firstLogin) {
+		      while (oldPassword != activeUser.getPassword()){
+		    	  System.out.print("Enter your current password: ");
+		    	  oldPassword = this.in.nextLine();
+		      }
+    	  }
+	
     	  System.out.print("Enter your new password: ");
-    	  newPassword = in.nextLine();
-    	  
+    	  String newPassword = this.in.nextLine();
     	  activeUser.setPassword(newPassword);
-      }
     }
 
     /////// MAIN METHOD ///////////////////////////////////////////////////////////////////
