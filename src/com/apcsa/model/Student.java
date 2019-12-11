@@ -1,14 +1,12 @@
 package com.apcsa.model;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import com.apcsa.model.User;
 
 public class Student extends User {
-
   
-	public Student(int userId, String accountType, String username, String password, String lastLogin) {
-		super(userId, accountType, username, password, lastLogin);
-	}
-
 	private int studentId;
     private int classRank;
     private int gradeLevel;
@@ -16,12 +14,65 @@ public class Student extends User {
     private double gpa;
     private String firstName;
     private String lastName;
-	private String user;
-	private String rs;
+	
+	public Student(User user, ResultSet rs) throws SQLException {
+		super(user.getUserId(), user.getAccountType(), user.getUsername(), user.getPassword(), user.getLastLogin());
+		this.studentId = rs.getInt("student_id");
+		this.setClassRank(rs.getInt("class_rank"));
+		this.setGradeLevel(rs.getInt("grade_level"));
+		this.graduationYear = rs.getInt("graduation");
+		this.setGpa(rs.getDouble("gpa"));
+		this.firstName = rs.getString("first_name");
+		this.lastName = rs.getString("last_name");
+	}
 
-    public void student(String user, String rs){
-      this.user = user;
-      this.rs = rs;
-    }
+	/*
+	 * Getters
+	 */
+	
+	public int getStudentId() {
+		return studentId;
+	}
+
+	public int getClassRank() {
+		return classRank;
+	}
+
+	public int getGradeLevel() {
+		return gradeLevel;
+	}
+
+	public double getGpa() {
+		return gpa;
+	}
+	
+	public int getGraduationYear() {
+		return graduationYear;
+	}
+	
+	public String getFirstName() {
+		return firstName;
+	}
+	
+	public String getLastName() {
+		return lastName;
+	}
+	
+	/*
+	 * Setters
+	 */
+
+	public void setGradeLevel(int gradeLevel) {
+		this.gradeLevel = gradeLevel;
+	}
+	
+	public void setClassRank(int classRank) {
+		this.classRank = classRank;
+	}
+
+	public void setGpa(double gpa) {
+		this.gpa = gpa;
+	}
 
 }
+
