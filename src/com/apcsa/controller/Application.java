@@ -88,12 +88,43 @@ public class Application {
     /**
      * Displays the student UI
      * 
-     * 
-     */
+	 */
     
     private void studentUI() {
-    
+        while (activeUser != null) {
+            switch (getRootMenuSelection()) {
+                case PASSWORD: changePassword(false); break;
+                case DATABASE: factoryReset(); break;
+                case LOGOUT: logout(); break;
+                case SHUTDOWN: shutdown(); break;
+                default: System.out.println("\nInvalid selection."); break;
+            }
+        }
     }
+    
+    /*
+     * Retrieves a students user's menu selection.
+     * 
+     * @return the menu selection
+     */
+
+    private RootAction getStudentMenuSelection() {
+        System.out.println();
+        
+        System.out.println("[1] View Course Grades.");
+        System.out.println("[2] View assignment grades by course.");
+        System.out.println("[3] Change Password.");
+        System.out.println("[4] Logout.");
+        System.out.print("\n::: ");
+        
+        switch (Utils.getInt(in, -1)) {
+//        	case 1: return RootAction.DATABASE;
+//    	   	case 2: return RootAction.DATABASE;
+            case 3: return RootAction.PASSWORD;
+            case 4: return RootAction.LOGOUT;
+            default: return null;
+        }
+     }
     
     /**
      * Displays the teacher UI
@@ -110,13 +141,12 @@ public class Application {
     /**
      * Displays the root UI
      * 
-     * 
      */
     
     private void rootUI() {
         while (activeUser != null) {
             switch (getRootMenuSelection()) {
-                case PASSWORD: resetPassword(); break;
+                case PASSWORD: changePassword(false); break;
                 case DATABASE: factoryReset(); break;
                 case LOGOUT: logout(); break;
                 case SHUTDOWN: shutdown(); break;
@@ -149,28 +179,7 @@ public class Application {
         }
      }
     
-    /**
-     * Prompts user for their initial password, and a new password and updates the account.
-     * If it is the user's first login, it won't prompt for the old login
-     *
-     * @return their new account information
-     */
-
-    public void changePassword(boolean firstLogin){
-    	//for root user, need to make it so you can change the password of any user
-    	
-    	  String oldPassword = null;
-    	  if (!firstLogin) {
-		      while (oldPassword != activeUser.getPassword()){
-		    	  System.out.print("Enter your current password: ");
-		    	  oldPassword = this.in.nextLine();
-		      }
-    	  }
-	
-    	  System.out.print("Enter your new password: ");
-    	  String newPassword = this.in.nextLine();
-    	  activeUser.setPassword(newPassword);
-    }
+    
     
     /*
      * Resets the database to its factory settings.
@@ -184,6 +193,16 @@ public class Application {
         //      call database initialize method with parameter of true
         //      print success message
         //
+    }
+    
+    /**
+     * Resets a user's password.
+     * 
+     * @param username the user's username
+     */
+
+    public static void resetPassword(String username) {
+      
     }
     
     /////// ADMIN METHODS //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -244,13 +263,14 @@ public class Application {
      }
     
     /**
-     * Resets a user's password.
-     * 
-     * @param username the user's username
+     * Prompts user for their initial password, and a new password and updates the account.
+     * If it is the user's first login, it won't prompt for the old login
+     *
+     * @return their new account information
      */
 
-    public static void changePassword(String username) {
-        //
+    public void changePassword(boolean firstLogin){
+    	  //
         // get a connection to the database
         // create a prepared statement (both of thses should go in a try-with-resources statement)
         //
@@ -260,6 +280,18 @@ public class Application {
         //
         // execute the update statement
         //
+    	    	
+    	  String oldPassword = null;
+    	  if (!firstLogin) {
+		      while (oldPassword != activeUser.getPassword()){
+		    	  System.out.print("Enter your current password: ");
+		    	  oldPassword = this.in.nextLine();
+		      }
+    	  }
+	
+    	  System.out.print("Enter your new password: ");
+    	  String newPassword = this.in.nextLine();
+    	  activeUser.setPassword(newPassword);
     }
     
     /*
