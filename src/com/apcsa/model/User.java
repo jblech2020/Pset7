@@ -43,6 +43,21 @@ public class User {
         this.password = password;
         this.lastLogin = lastLogin;
     }
+    
+    /**
+     * Creates an instance of the User class.
+     * 
+     * @param user an existing User object
+     */
+    
+    public User(User user) {
+        this(user.getUserId(),
+             user.getAccountType(),
+             user.getUsername(),
+             user.getPassword(),
+             user.getLastLogin()
+        );
+    }
 
     /**
      * @return userId
@@ -92,6 +107,15 @@ public class User {
     public String getFirstName() {
         return "Root";
     }
+    
+    /**
+     * Sets the password of the user
+     * @param password
+     */
+    
+    public void setPassword(String password) {
+		this.password = password;
+	}
 
     /**
      * @return true if the user is a root user; false otherwise
