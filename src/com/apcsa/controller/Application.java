@@ -9,6 +9,8 @@ public class Application {
     private Scanner in;
     private User activeUser;
 
+    enum RootAction { PASSWORD, DATABASE, LOGOUT, SHUTDOWN }
+    
     /**
      * Creates an instance of the Application class, which is responsible for interacting
      * with the user via the command line interface.
@@ -42,36 +44,45 @@ public class Application {
 
             // if login is successful, update generic user to administrator, teacher, or student
 
-            if (login(username, password)) {
-                this.activeUser = this.activeUser.isAdministrator()
-                    ? PowerSchool.getAdministrator(this.activeUser) : this.activeUser.isTeacher()
-                    ? PowerSchool.getTeacher(this.activeUser) : this.activeUser.isStudent()
-                    ? PowerSchool.getStudent(this.activeUser) : this.activeUser.isRoot()
-                    ? this.activeUser : null;
-
-                if (isFirstLogin() && !this.activeUser.isRoot()) {
-                	changePassword(true);
+            try {
+                if (login(username, password)) {
+                    activeUser = activeUser.isAdministrator()
+                        ? PowerSchool.getAdministrator(activeUser) : activeUser.isTeacher()
+                        ? PowerSchool.getTeacher(activeUser) : activeUser.isStudent()
+                        ? PowerSchool.getStudent(activeUser) : activeUser.isRoot()
+                        ? activeUser : null;
+                        
+                    if (isFirstLogin() && !activeUser.isRoot()) {
+                    	changePassword(true);
+                    }
+                    
+                    createAndShowUI();
+                } else {
+                    System.out.println("\nInvalid username and/or password.");
                 }
-
-                // create and show the user interface
-                //
-                // remember, the interface will be difference depending on the type
-                // of user that is logged in (root, administrator, teacher, student)
-                
-                if (this.activeUser.isStudent()) {
-                	studentUI();
-                } else if (this.activeUser.isTeacher()) {
-                	teacherUI();
-                } else if (this.activeUser.isRoot()) {
-                	rootUI();
-                } else if (this.activeUser.isAdministrator()) {
-                	adminUI();
-                }
-                
-            } else {
-                System.out.println("\nInvalid username and/or password.");
+            } catch (Exception e) {
+                shutdown(e);
             }
         }
+    }
+    
+    /**
+     * Displays an user type-specific menu with which the user
+     * navigates and interacts with the application.
+     */
+
+    public void createAndShowUI() {
+        System.out.println("\nHello, again, " + activeUser.getFirstName() + "!");
+
+		if (this.activeUser.isStudent()) {
+	    	studentUI();
+	    } else if (this.activeUser.isTeacher()) {
+	    	teacherUI();
+	    } else if (this.activeUser.isRoot()) {
+	    	rootUI();
+	    } else if (this.activeUser.isAdministrator()) {
+	    	adminUI();
+	    }
     }
     
     /**
@@ -80,8 +91,8 @@ public class Application {
      * 
      */
     
-    public void studentUI() {
-    	
+    private void studentUI() {
+    
     }
     
     /**
@@ -90,19 +101,92 @@ public class Application {
      * 
      */
     
-    public void teacherUI() {
+    private void teacherUI() {
     	
     }
     
+    /////// ROOT METHODS //////////////////////////////////////////////////////////////////////////////////////////////////////
+
     /**
      * Displays the root UI
      * 
      * 
      */
     
-    public void rootUI() {
-    	
+    private void rootUI() {
+        while (activeUser != null) {
+            switch (getRootMenuSelection()) {
+                case PASSWORD: resetPassword(); break;
+                case DATABASE: factoryReset(); break;
+                case LOGOUT: logout(); break;
+                case SHUTDOWN: shutdown(); break;
+                default: System.out.println("\nInvalid selection."); break;
+            }
+        }
     }
+    
+    /*
+     * Retrieves a root user's menu selection.
+     * 
+     * @return the menu selection
+     */
+
+    private RootAction getRootMenuSelection() {
+        System.out.println();
+        
+        System.out.println("[1] Reset user password.");
+        System.out.println("[2] Factory reset database.");
+        System.out.println("[3] Logout.");
+        System.out.println("[4] Shutdown.");
+        System.out.print("\n::: ");
+        
+        switch (Utils.getInt(in, -1)) {
+            case 1: return RootAction.PASSWORD;
+            case 2: return RootAction.DATABASE;
+            case 3: return RootAction.LOGOUT;
+            case 4: return RootAction.SHUTDOWN;
+            default: return null;
+        }
+     }
+    
+    /**
+     * Prompts user for their initial password, and a new password and updates the account.
+     * If it is the user's first login, it won't prompt for the old login
+     *
+     * @return their new account information
+     */
+
+    public void changePassword(boolean firstLogin){
+    	//for root user, need to make it so you can change the password of any user
+    	
+    	  String oldPassword = null;
+    	  if (!firstLogin) {
+		      while (oldPassword != activeUser.getPassword()){
+		    	  System.out.print("Enter your current password: ");
+		    	  oldPassword = this.in.nextLine();
+		      }
+    	  }
+	
+    	  System.out.print("Enter your new password: ");
+    	  String newPassword = this.in.nextLine();
+    	  activeUser.setPassword(newPassword);
+    }
+    
+    /*
+     * Resets the database to its factory settings.
+     */
+
+    private void factoryReset() {
+        //
+        // ask root user to confirm intent to reset the database
+        //
+        // if confirmed...
+        //      call database initialize method with parameter of true
+        //      print success message
+        //
+    }
+    
+    /////// ADMIN METHODS //////////////////////////////////////////////////////////////////////////////////////////////////////
     
     /**
      * Displays the administrator UI
@@ -139,7 +223,8 @@ public class Application {
         return activeUser.getLastLogin().equals("0000-00-00 00:00:00.000");
     }
 
-
+   /////// ALL USER METHODS //////////////////////////////////////////////////////////////////////////////////////////////////////
+    
    /**
     * Logs the user out of their account.
     *
@@ -147,29 +232,86 @@ public class Application {
     */
 
     public void logout(){
-        activeUser = null;
-        Application.startup();
-    }
+    	  //
+        // ask root user to confirm intent to logout
+        //
+        // if confirmed...
+        // 
+    	activeUser = null;
+    	Application app = new Application();
 
+        app.startup();
+     }
+    
     /**
-     * Prompts user for their initial password, and a new password and updates the account.
-     * If it is the user's first login, it won't prompt for the old login
-     *
-     * @return their new account information
+     * Resets a user's password.
+     * 
+     * @param username the user's username
      */
 
-    public void changePassword(boolean firstLogin){
-    	  String oldPassword = null;
-    	  if (firstLogin) {
-		      while (oldPassword != activeUser.getPassword()){
-		    	  System.out.print("Enter your current password: ");
-		    	  oldPassword = this.in.nextLine();
-		      }
-    	  }
-	
-    	  System.out.print("Enter your new password: ");
-    	  String newPassword = this.in.nextLine();
-    	  activeUser.setPassword(newPassword);
+    public static void changePassword(String username) {
+        //
+        // get a connection to the database
+        // create a prepared statement (both of thses should go in a try-with-resources statement)
+        //
+        // insert parameters into the prepared statement
+        //      - the user's hashed username
+        //      - the user's plaintext username
+        //
+        // execute the update statement
+        //
+    }
+    
+    /*
+     * Resets another user's password and last login timestamp.
+     */
+        
+    //
+    // upset the users table
+    // two columns need to be updated
+    //          - auth
+    //          - last_login
+    //
+    // auth will be set to the hash of the user's username
+    // last_login will be reverted to 0000-00-00 00:00:00.000
+    //
+    // only modify rows where username matches parameter provided
+    
+   /////// SHUTDOWN METHODS //////////////////////////////////////////////////////////////
+    
+    /*
+     * Shuts down the application.
+     * 
+     * @param e the error that initiated the shutdown sequence
+     */
+    
+    private void shutdown(Exception e) {
+        if (in != null) {
+            in.close();
+        }
+        
+        System.out.println("Encountered unrecoverable error. Shutting down...\n");
+        System.out.println(e.getMessage());
+                
+        System.out.println("\nGoodbye!");
+        System.exit(0);
+    }
+    
+    /*
+     * Releases all resources and kills the application.
+     */
+    
+    private void shutdown() {        
+        System.out.println();
+            
+        if (Utils.confirm(in, "Are you sure? (y/n) ")) {
+            if (in != null) {
+                in.close();
+            }
+            
+            System.out.println("\nGoodbye!");
+            System.exit(0);
+        }
     }
 
     /////// MAIN METHOD ///////////////////////////////////////////////////////////////////
