@@ -96,7 +96,15 @@ public class Application {
      */
 
     private void studentUI() {
-
+      while (activeUser != null) {
+        switch (studentSelection()) {
+        case 1: courseGrades(); break;
+        case 2: assignment(); break;
+        case 3: resetPassword(); break;
+        case 4: logout(); break;
+        default: System.out.println("\nInvalid selection. \n"); break;
+        }
+      }
     }
 
     /**
