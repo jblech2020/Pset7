@@ -114,7 +114,17 @@ public class Application {
      */
 
     private void teacherUI() {
-
+      while (activeUser != null) {
+        switch (teacherSelection()) {
+        case 1: enrollment(); break;
+        case 2: addAssignment(); break;
+        case 3: deleteAssignment(); break;
+        // 			case 4: enterGrade(); break;
+        case 5: resetPassword(); break;
+        case 6: logout(); break;
+        default: System.out.println("\nInvalid selection. \n"); break;
+        }
+      }
     }
 
     /////// ROOT METHODS //////////////////////////////////////////////////////////////////////////////////////////////////////
