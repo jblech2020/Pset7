@@ -80,12 +80,12 @@ public class Application {
 
 		if (this.activeUser.isStudent()) {
 	    	studentUI();
-	    } else if (this.activeUser.isTeacher()) {
-	    	teacherUI();
-	    } else if (this.activeUser.isRoot()) {
-	    	rootUI();
 	    } else if (this.activeUser.isAdministrator()) {
 	    	adminUI();
+	    } else if (this.activeUser.isRoot()) {
+	    	rootUI();
+	    } else if (this.activeUser.isTeacher()) {
+	    	teacherUI();
 	    }
     }
 
