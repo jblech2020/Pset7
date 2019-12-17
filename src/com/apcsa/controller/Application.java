@@ -273,15 +273,14 @@ public class Application {
     */
 
     public void logout(){
-    	  //
-        // ask root user to confirm intent to logout
-        //
-        // if confirmed...
-        //
-    	activeUser = null;
-    	Application app = new Application();
-
-        app.startup();
+        in.nextLine();
+        System.out.println("\nAre you sure you want to logout? (y/n)");
+        String logout = in.nextLine();
+        if (logout.equals("y")) {
+          activeUser = null;
+          Application app = new Application();
+          app.startup();
+        }
      }
 
     /**
