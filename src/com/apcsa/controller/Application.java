@@ -127,6 +127,7 @@ public class Application {
       }
     }
 
+
     /////// ROOT METHODS //////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
@@ -208,6 +209,13 @@ public class Application {
     	}
     }
 
+    public void faculty() {
+    	ArrayList<String> teachers = PowerSchool.getTeachers();
+    	for(int i = 0; i < teachers.size(); i = i + 2) {
+    		System.out.println(i+1 + ". " + teachers.get(i+1) + ", " + teachers.get(i) + " / " );
+    	}
+    }
+
     /////// ADMIN METHODS //////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
@@ -217,7 +225,18 @@ public class Application {
      */
 
     public void adminUI() {
-
+      while (activeUser != null) {
+        switch (administratorSelection()) {
+        case 1: faculty(); break;
+        // 			case 2: facultyByDepartment(); break;
+        // 			case 3: studentEnrollment(); break;
+        // 			case 4: studentEnrollmentbyGrade(); break;
+        // 			case 5: studentEnrollmentbyCourse(); break;
+        case 6: resetPassword(); break;
+        case 7: logout(); break;
+        default: System.out.println("\nInvalid selection. \n"); break;
+        }
+      }
     }
 
 
