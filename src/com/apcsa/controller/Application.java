@@ -208,6 +208,37 @@ public class Application {
     		System.out.println("Successfully reset database.");
     	}
     }
+    /*
+     * Resets current user password
+     */
+    public void resetPassword() {
+        in.nextLine();
+        System.out.println("\nEnter current password: ");
+        String currentPassword = in.nextLine();
+        System.out.println("Enter new password: ");
+        String newPassword = in.nextLine();
+
+        String truePassword = PowerSchool.getPassword(activeUser, currentPassword);
+
+        if(!Utils.getHash(currentPassword).equals(truePassword)) {
+          System.out.println("\nInvalid current password.\n");
+        } else {
+          changePassword(activeUser.getUsername(), newPassword);
+        }
+    }
+
+    /*
+     * Enrolls in a course,                     not implemented right
+     */
+    public void enrollment() {
+    	System.out.println("\nChoose a course.\n");
+    	int departmentId = ((Teacher) activeUser).getDepartmentId();
+    	ArrayList<String> courses = PowerSchool.getCourses(departmentId);
+    	for(int i = 0; i <= courses.size()-1; i++) {
+    		System.out.println("[" + (i + 1) + "] " + courses.get(i));
+    	}
+    	int courseSelection = in.nextInt();
+    }
 
     public void faculty() {
     	ArrayList<String> teachers = PowerSchool.getTeachers();
