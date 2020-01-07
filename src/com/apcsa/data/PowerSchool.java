@@ -180,6 +180,26 @@ public class PowerSchool {
     }
 
     /*
+     * Creates an arraylist of the teachers in the database and returns it.
+     */
+
+    public static ArrayList<Teacher> getFaculty() {
+        ArrayList<Teacher> faculty = new ArrayList<Teacher>();
+         try (Connection conn = getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_FACULTY);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    faculty.add(new Teacher(rs));
+                }
+            }
+         } catch (SQLException e) {
+             System.out.println(e);
+         }
+
+         return faculty;
+     }
+
+    /*
      * Updates the last login time for the user.
      *
      * @param conn the current database connection
