@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import com.apcsa.controller.Utils;
 import com.apcsa.model.Administrator;
@@ -68,31 +69,29 @@ public class PowerSchool {
      * @return the User object for valid logins; null for invalid logins
      */
 
-    public static User login(String username, String password) {
-        try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(QueryUtils.LOGIN_SQL)) {
+     public static User login(String username, String password) {
+         try (Connection conn = getConnection(); PreparedStatement stmt = conn.prepareStatement(QueryUtils.LOGIN_SQL)) {
 
-            stmt.setString(1, username);
-            stmt.setString(2, Utils.getHash(password));
+             stmt.setString(1, username);
+             stmt.setString(2, Utils.getHash(password));
 
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    Timestamp ts = new Timestamp(new Date().getTime());
-                    int affected = PowerSchool.updateLastLogin(conn, username, ts);
+             try (ResultSet rs = stmt.executeQuery()) {
+                 if (rs.next()) {
+                     Timestamp ts = new Timestamp(new Date().getTime());
+                     int affected = PowerSchool.updateLastLogin(conn, username, ts);
 
-                    if (affected != 1) {
-                        System.err.println("Unable to update last login (affected rows: " + affected + ").");
-                    }
+                     if (affected != 1) {
+                         System.err.println("Unable to update last login (affected rows: " + affected + ").");
+                     }
+                     return new User(rs);
+                 }
+             }
+         } catch (SQLException e) {
+             e.printStackTrace();
+         }
 
-                    return new User(rs);
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }
+         return null;
+     }
 
     /**
      * Returns the administrator account associated with the user.
