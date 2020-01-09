@@ -1,20 +1,19 @@
 package com.apcsa.controller;
 
-import java.security.MessageDigest;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import com.apcsa.data.PowerSchool;
-
+import java.util.Collections;
+import java.util.Comparator;
 
 import com.apcsa.model.Student;
 

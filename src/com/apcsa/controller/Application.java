@@ -7,6 +7,12 @@ import java.util.*;
 
 public class Application {
 
+	//Root login: 
+	//Teacher login:
+	//Admin Login:
+	//Student Login:
+	
+	
     private Scanner in;
     private User activeUser;
     enum RootAction { PASSWORD, DATABASE, LOGOUT, SHUTDOWN }
