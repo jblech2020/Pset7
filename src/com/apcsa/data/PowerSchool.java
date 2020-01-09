@@ -92,6 +92,34 @@ public class PowerSchool {
 
          return null;
      }
+     
+     /*
+      * Updates the password for the user.
+      * 
+      * @param conn the current database connection
+      * @param username the user's username
+      * @param hasehdPassword the password to update 
+      */
+     
+     public static int updatePassword(Connection conn, String username, String hashedPassword) {
+     	try (PreparedStatement stmt = conn.prepareStatement(QueryUtils.UPDATE_PASSWORD_SQL)) {
+         	stmt.setString(1, hashedPassword);
+         	stmt.setString(2, username);
+         	conn.setAutoCommit(false);
+         	if (stmt.executeUpdate() == 1) {
+         		conn.commit();
+         		
+         		return 1;
+         	}else {
+         		conn.rollback();
+         		
+         		return -1;
+         	}
+         } catch (SQLException e) {
+ 			e.printStackTrace();
+ 			return -1;
+ 		}
+     }
 
     /**
      * Returns the administrator account associated with the user.
@@ -175,7 +203,7 @@ public class PowerSchool {
      * @throws SQLException
      */
 
-    private static Connection getConnection() throws SQLException {
+    public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(PROTOCOL + DATABASE_URL);
     }
 
@@ -268,4 +296,24 @@ public class PowerSchool {
             e.printStackTrace();
         }
     }
+
+
+    /*
+     * Creates an arraylist of students in the database and returns it.
+     */
+   public static ArrayList<Student> getStudents() {
+       ArrayList<Student> students = new ArrayList<Student>();
+       try (Connection conn = getConnection()) {
+           PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_STUDENTS);
+           try (ResultSet rs = stmt.executeQuery()) {
+               while (rs.next()) {
+                   students.add(new Student(rs));
+               }
+           }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return students;
+   }
 }
