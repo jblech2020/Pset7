@@ -3,12 +3,14 @@ package com.apcsa.model;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.apcsa.controller.Utils;
+
 public class User {
 
     private int userId;
     private String accountType;
     private String username;
-    private String password;
+    protected String password;
     private String lastLogin;
 
     /**
@@ -43,20 +45,13 @@ public class User {
         this.password = password;
         this.lastLogin = lastLogin;
     }
-    
-    /**
-     * Creates an instance of the User class.
-     * 
-     * @param user an existing User object
-     */
-    
+
     public User(User user) {
-        this(user.getUserId(),
-             user.getAccountType(),
-             user.getUsername(),
-             user.getPassword(),
-             user.getLastLogin()
-        );
+        this.userId = user.getUserId();
+        this.accountType = user.getAccountType().toLowerCase();
+        this.username = user.getUsername();
+        this.password = user.getPassword();
+        this.lastLogin = user.getLastLogin();
     }
 
     /**
@@ -91,6 +86,11 @@ public class User {
         return password;
     }
 
+    public void setPassword(String password) {
+    	this.password = password;
+
+    }
+
     /**
      * @return lastLogin
      */
@@ -107,15 +107,6 @@ public class User {
     public String getFirstName() {
         return "Root";
     }
-    
-    /**
-     * Sets the password of the user
-     * @param password
-     */
-    
-    public void setPassword(String password) {
-		this.password = password;
-	}
 
     /**
      * @return true if the user is a root user; false otherwise
