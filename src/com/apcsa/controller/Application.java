@@ -7,6 +7,12 @@ import java.util.*;
 
 public class Application {
 
+	//Root login: 
+	//Teacher login:
+	//Admin Login:
+	//Student Login:
+	
+	
     private Scanner in;
     private User activeUser;
     enum RootAction { PASSWORD, DATABASE, LOGOUT, SHUTDOWN }
@@ -23,7 +29,7 @@ public class Application {
         this.in = new Scanner(System.in);
 
         try {
-            PowerSchool.initialize(true);
+            PowerSchool.initialize(false);
         } catch (Exception e) {
             e.printStackTrace();
         }

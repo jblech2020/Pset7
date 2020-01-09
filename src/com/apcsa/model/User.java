@@ -3,8 +3,6 @@ package com.apcsa.model;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import com.apcsa.controller.Utils;
-
 public class User {
 
     private int userId;

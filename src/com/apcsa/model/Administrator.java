@@ -1,5 +1,9 @@
 package com.apcsa.model;
 
+import com.apcsa.controller.Utils;
+import com.apcsa.data.PowerSchool;
+import com.apcsa.model.User;
+import com.apcsa.data.QueryUtils;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -7,11 +11,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import com.apcsa.model.User;
-import com.apcsa.data.QueryUtils;
-import com.apcsa.controller.Utils;
-import com.apcsa.data.PowerSchool;
 
 public class Administrator extends User {
 
@@ -121,7 +120,7 @@ public class Administrator extends User {
 		ArrayList<Student> students = new ArrayList<Student>();
 		students = PowerSchool.getStudents();
 		for (int i = 0; i < students.size(); i++) {
-			System.out.println(students.get(i).getLastName() + ", " + students.get(i).getFirstName() + " / " + students.get(i).getGraduation());
+			System.out.println(students.get(i).getLastName() + ", " + students.get(i).getFirstName() + " / " + students.get(i).getGraduationYear());
 		}
 	}
 
@@ -172,7 +171,7 @@ public class Administrator extends User {
 
 		for (int i = 0; i < students.size(); i++) {
 			if (students.get(i).getGradeLevel() == selection) {
-				System.out.println(students.get(i).getLastName() + ", " + students.get(i).getFirstName() + " / " + students.get(i).getGraduation());
+				System.out.println(students.get(i).getLastName() + ", " + students.get(i).getFirstName() + " / " + students.get(i).getGraduationYear());
 			}
 		}
 
