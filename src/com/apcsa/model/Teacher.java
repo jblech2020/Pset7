@@ -2,10 +2,9 @@ package com.apcsa.model;
 
 import java.sql.*;
 import java.util.*;
-
-import com.apcsa.model.User;
 import com.apcsa.data.*;
 import com.apcsa.controller.*;
+import com.apcsa.model.User;
 
 public class Teacher extends User {
 
@@ -15,13 +14,13 @@ public class Teacher extends User {
     private String lastName;
     private String departmentName;
 
-
     /**
      * Teacher constructor with only a ResultSet and user.
      * @param user user (in most cases active user)
      * @param rs ResultSet
      * @throws SQLException
      */
+    
     public Teacher(User user, ResultSet rs) throws SQLException {
     	super(user);
 
@@ -36,6 +35,7 @@ public class Teacher extends User {
      * @param rs ResultSet
      * @throws SQLException
      */
+    
     public Teacher(ResultSet rs) throws SQLException {
 		super(rs.getInt("user_id"), rs.getString("account_type"), rs.getString("username"), rs.getString("auth"), rs.getString("last_login"));
 		this.teacherId = rs.getInt("teacher_id");
