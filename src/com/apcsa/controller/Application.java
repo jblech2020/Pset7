@@ -162,8 +162,17 @@ public class Application {
 
     		}
     	}else if (user.isRoot()) {
-
-    	}
+    		switch(getRootSelection()) {
+				case PASSWORD:
+					return true;
+				case DATABASE:
+					return true;
+				case LOGOUT:
+					return true;
+				case SHUTDOWN:
+					return false;
+    		}
+		}
 
     	return true;
     }
@@ -206,8 +215,6 @@ public class Application {
 				return AdminAction.PASSWORD;
 			case 7:
 				return AdminAction.LOGOUT;
-			default:
-				return null;
 		}
 
     }
@@ -247,7 +254,7 @@ public class Application {
 	}
 
 	/*
-	 *	Requests selection form any teacher accounts.
+	 *	Requests selection from any teacher accounts.
 	 */
 
 	public TeacherAction getTeacherSelection() {
@@ -283,6 +290,37 @@ public class Application {
 				return TeacherAction.LOGOUT;
 			default:
 				return null;
+		}
+
+	}
+	
+	public RootAction getRootSelection() {
+		int output = -1;
+		do {
+			System.out.println("[1] Reset user password.");
+	        System.out.println("[2] Factory reset database.");
+	        System.out.println("[3] Logout.");
+	        System.out.println("[4] Shutdown.");
+	        System.out.print("\n::: ");
+			try {
+                output = in.nextInt();
+			} catch (InputMismatchException e) {
+				System.out.println("\nYour input was invalid. Please try again.\n");
+			}
+            in.nextLine();
+		} while (output > 4 || output < 1);
+
+		switch(output) {
+			case 1: 
+				return RootAction.PASSWORD;
+	        case 2: 
+	        	return RootAction.DATABASE;
+	        case 3: 
+	        	return RootAction.LOGOUT;
+	        case 4: 
+	        	return RootAction.SHUTDOWN;
+	        default: 
+	        	return null;
 		}
 
 	}
