@@ -215,6 +215,8 @@ public class Application {
 				return AdminAction.PASSWORD;
 			case 7:
 				return AdminAction.LOGOUT;
+			default:
+				return null;
 		}
 
     }
